@@ -1,0 +1,58 @@
+package com.rajat_singh.leetcode_api.controller;
+
+
+import com.rajat_singh.leetcode_api.dto.QuestionResponseDTO;
+import com.rajat_singh.leetcode_api.dto.QuestionSearchRequest;
+import com.rajat_singh.leetcode_api.entity.QuestionEntity;
+import com.rajat_singh.leetcode_api.mappers.QuestionMapper;
+import com.rajat_singh.leetcode_api.repository.QuestionsRepository;
+import com.rajat_singh.leetcode_api.service.LeetCodeQuestionsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import org.tinylog.Logger;
+
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/v1/questions")
+@RequiredArgsConstructor
+public class LeetCodeQuestionsController {
+
+    private final LeetCodeQuestionsService leetCodeQuestionsService;
+    private final QuestionsRepository questionsRepository;
+    private final QuestionMapper questionMapper;
+
+    /**
+     * Standard paginated endpoint to get questions from YOUR database.
+     * e.g., /api/v1/questions?page=0&size=20
+     */
+    @GetMapping()
+    public ResponseEntity<Page<QuestionResponseDTO>> getAllQuestions(Pageable pageable){
+        Logger.info("Fetching questions from database with pagination: {}", pageable);
+
+        Page<QuestionEntity> entityPage = questionsRepository.findAll(pageable);
+
+        Page<QuestionResponseDTO> dtoPage = entityPage.map(questionMapper::entityToResponseDTO);
+
+        return ResponseEntity.ok(dtoPage);
+    }
+
+
+    /**
+     * A powerful, filterable search endpoint.
+     */
+    @PostMapping("/search")
+    public ResponseEntity<Page<QuestionResponseDTO>>searchQuestions(@RequestBody QuestionSearchRequest request) {
+        Logger.info("searchQuestions() method called with request :: {}",request);
+        Page<QuestionResponseDTO> dtoPage = leetCodeQuestionsService.findQuestions(request);
+        return ResponseEntity.ok(dtoPage);
+    }
+
+
+}

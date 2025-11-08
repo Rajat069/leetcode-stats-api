@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: leetcode-api
+
+  jackson:
+    serialization:
+      indent_output: true
+
+  datasource:
+    url: jdbc:sqlite:./data/leetcode.db
+    driver-class-name: org.sqlite.JDBC
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+leetcode:
+  graphql:
+        url: https://leetcode.com/graphql
+
+app:
+  api:
+    secret: ""
+
+bucket4j:
+  cache-name: "default"
+  enabled: true
+  filter-config-cache-name: "filter-config-cache"
+  filters:
+    - cache-name: "search-api"
+      url: "/api/v1/questions/search"
+      strategy: "local" # Use "local" for single-instance, SQLite/Caffeine app
+      http-response-body: '{"message": "You have exhausted your API quota. Please try again later."}'
+      http-status-code: "429"
+      rate-limits:
+        - expression: "getRemoteAddr()" # This applies the limit *per IP address*
+          bandwidths:
+            - capacity: 20  # Each IP gets 20 "tokens"
+              time: 1       # ...per 1 minute
+              unit: "minutes"
+              fixed-refill-interval: 10
+              fixed-refill-interval-unit: "seconds"
+
+    # A stricter filter for the simple GET endpoint
+    - cache-name: "browse-api"
+      url: "/api/v1/questions"
+      strategy: "local"
+      http-status-code: "429"
+      rate-limits:
+        - expression: "getRemoteAddr()"
+          bandwidths:
+            - capacity: 50
+              time: 1
+              unit: "minutes"
+
+resilience4j:
+  ratelimiter:
+    instances:
+      # name of our outbound limiter
+      leetcode-api:
+        limitForPeriod: 10                # Allow only 10 calls...
+        limitRefreshPeriod: 1s            # ...per 1 second.
+        timeoutDuration: 2s               # How long to wait for permission
+        register-health-indicator: true
