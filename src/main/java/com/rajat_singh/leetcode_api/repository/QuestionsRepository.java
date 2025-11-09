@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface QuestionsRepository extends JpaRepository<QuestionEntity,Integer>, JpaSpecificationExecutor<QuestionEntity> {
 
     QuestionEntity findByTitleSlug(String title);
+    QuestionEntity findByIsProblemOfTheDayTrue();
 
 }

@@ -84,9 +84,11 @@ All endpoints are relative to the base path `/api/v1`.
 **Base Path**: `/api/v1/questions`
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+|--------|--------|-------------|
 | GET | `/` | Get a paginated list of all questions from the local database. Supports `?page=`, `&size=`, and `&sort=`. |
+| GET | `/potd` | Get the current LeetCode Problem of the Day (POTD). |
 | POST | `/search` | A powerful search endpoint. See request body details below. |
+
 
 #### POST /search Request Body
 

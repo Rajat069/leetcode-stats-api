@@ -272,4 +272,16 @@ public class LeetCodeClient {
         return restTemplate.postForObject(leetcodeApiUrl,entity,UserLeetCodeCalendarResponse.class);
     }
 
+    @RateLimiter(name = "leetcode-api")
+    public DailyCodingChallengeResponse fetchDailyCodingChallengeQuestions() {
+        HttpHeaders headers = new HttpHeaders();
+        setHeader(headers);
+
+        Map<String,Object> requestBody = new HashMap<>();
+        requestBody.put("query", FETCH_POTD);
+
+        HttpEntity<Map<String ,Object>> entity = new HttpEntity<>(requestBody, headers);
+        return restTemplate.postForObject(leetcodeApiUrl,entity,DailyCodingChallengeResponse.class);
+    }
+
 }

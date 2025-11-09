@@ -1,11 +1,13 @@
 package com.rajat_singh.leetcode_api.scheduler;
 
 import com.rajat_singh.leetcode_api.client.LeetCodeClient;
+import com.rajat_singh.leetcode_api.dto.DailyCodingChallengeResponse;
 import com.rajat_singh.leetcode_api.dto.QuestionListResponse;
 import com.rajat_singh.leetcode_api.entity.QuestionEntity;
 import com.rajat_singh.leetcode_api.entity.TopicTag;
 import com.rajat_singh.leetcode_api.mappers.QuestionMapper;
 import com.rajat_singh.leetcode_api.repository.QuestionsRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -87,5 +89,27 @@ public class LeetCodeSyncScheduler {
         }
         Long endTime = System.currentTimeMillis();
         Logger.info("LeetCode [AC Rate] sync completed in {} seconds.", (endTime - startTime) / 1000);
+    }
+
+    @Scheduled(cron = "0 31 5 * * ?", zone = "Asia/Kolkata") // Runs every day at 5:31 AM (IST) for POTD sync
+    @Async
+    public void syncPOTD() {
+        Logger.info("Starting LeetCode [POTD] sync... at {}", DateFormat.getDateInstance().format(System.currentTimeMillis()));
+        Long startTime = System.currentTimeMillis();
+        DailyCodingChallengeResponse response = leetCodeApiClient.fetchDailyCodingChallengeQuestions();
+
+        QuestionEntity existingQuestion = questionRepository.findByTitleSlug(response.getData().getActiveDailyCodingChallengeQuestion().getQuestion().getTitleSlug());
+        if(Objects.nonNull(existingQuestion)){
+                existingQuestion.setIsProblemOfTheDay(true);
+                questionRepository.save(existingQuestion);
+        }
+
+        Long endTime = System.currentTimeMillis();
+        Logger.info("LeetCode [POTD] sync completed in {} seconds.", (endTime - startTime) / 1000);
+    }
+
+    @PostConstruct
+    public void initialSync() {
+        syncPOTD();
     }
 }

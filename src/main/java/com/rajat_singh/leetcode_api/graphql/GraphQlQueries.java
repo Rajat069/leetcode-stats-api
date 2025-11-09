@@ -286,5 +286,17 @@ public class GraphQlQueries {
             }
            """;
 
+    public static final String FETCH_POTD = """
+            query questionOfToday {
+              activeDailyCodingChallengeQuestion {
+                date
+                link
+                question {
+                  titleSlug
+                }
+              }
+            }
+            """;
+
 
 }

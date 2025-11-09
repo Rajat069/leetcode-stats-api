@@ -54,5 +54,17 @@ public class LeetCodeQuestionsController {
         return ResponseEntity.ok(dtoPage);
     }
 
+    @GetMapping("/potd")
+    public ResponseEntity<QuestionResponseDTO> getPotd() {
+        Logger.info("Fetching POTD from database");
+        QuestionEntity potd = questionsRepository.findByIsProblemOfTheDayTrue();
+        if (potd == null) {
+            Logger.warn("No problem of the day found");
+            return ResponseEntity.notFound().build();
+        }
+        QuestionResponseDTO dto = questionMapper.entityToResponseDTO(potd);
+        return ResponseEntity.ok(dto);
+    }
+
 
 }

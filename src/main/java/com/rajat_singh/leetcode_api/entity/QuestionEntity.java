@@ -26,4 +26,5 @@ public class QuestionEntity {
     )
     private List<TopicTag> topicTags = new ArrayList<>();
     String problemUrl;
+    Boolean isProblemOfTheDay;
 }
