@@ -8,6 +8,7 @@ import com.rajat_singh.leetcode_api.mappers.QuestionMapper;
 import com.rajat_singh.leetcode_api.repository.QuestionsRepository;
 import com.rajat_singh.leetcode_api.service.LeetCodeQuestionsService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class LeetCodeQuestionsController {
      * e.g., /api/v1/questions?page=0&size=20
      */
     @GetMapping()
-    public ResponseEntity<Page<QuestionResponseDTO>> getAllQuestions(Pageable pageable){
+    public ResponseEntity<Page<QuestionResponseDTO>> getAllQuestions(@ParameterObject Pageable pageable){
         Logger.info("Fetching questions from database with pagination: {}", pageable);
 
         Page<QuestionEntity> entityPage = questionsRepository.findAll(pageable);
@@ -54,6 +55,9 @@ public class LeetCodeQuestionsController {
         return ResponseEntity.ok(dtoPage);
     }
 
+    /**
+    * Retrieves the current Problem of the Day (POTD) from the database
+    */
     @GetMapping("/potd")
     public ResponseEntity<QuestionResponseDTO> getPotd() {
         Logger.info("Fetching POTD from database");
@@ -65,6 +69,5 @@ public class LeetCodeQuestionsController {
         QuestionResponseDTO dto = questionMapper.entityToResponseDTO(potd);
         return ResponseEntity.ok(dto);
     }
-
 
 }

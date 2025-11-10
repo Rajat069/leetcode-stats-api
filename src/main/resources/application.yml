@@ -67,3 +67,13 @@ resilience4j:
         limitRefreshPeriod: 1s            # ...per 1 second.
         timeoutDuration: 2s               # How long to wait for permission
         register-health-indicator: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+  info:
+    title: leetstats-api
+    description: "The API for retrieving your LeetCode profile & Problems statistics"
+    version: "0.0.1-SNAPSHOT"

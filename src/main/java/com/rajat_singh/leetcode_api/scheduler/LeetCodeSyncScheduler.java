@@ -7,6 +7,7 @@ import com.rajat_singh.leetcode_api.entity.QuestionEntity;
 import com.rajat_singh.leetcode_api.entity.TopicTag;
 import com.rajat_singh.leetcode_api.mappers.QuestionMapper;
 import com.rajat_singh.leetcode_api.repository.QuestionsRepository;
+import com.rajat_singh.leetcode_api.utility.DBUtilities;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -32,6 +33,9 @@ public class LeetCodeSyncScheduler {
 
     @Autowired
     private  QuestionMapper questionMapper;
+
+    @Autowired
+    private DBUtilities dbUtilities;
 
     // Runs every week for full data sync
     @Async
@@ -106,6 +110,20 @@ public class LeetCodeSyncScheduler {
 
         Long endTime = System.currentTimeMillis();
         Logger.info("LeetCode [POTD] sync completed in {} seconds.", (endTime - startTime) / 1000);
+    }
+
+    @Scheduled(cron = "0 30 5 * * ?", zone = "Asia/Kolkata") // Runs every day at 5:30 AM (IST) for POTD removal)
+    @Async
+    public void removePOTD() {
+        Logger.info("Starting LeetCode [POTD] removal... at {}", DateFormat.getDateInstance().format(System.currentTimeMillis()));
+        Long startTime = System.currentTimeMillis();
+        QuestionEntity existingQuestion = questionRepository.findByIsProblemOfTheDayTrue();
+        if(Objects.nonNull(existingQuestion)){
+            existingQuestion.setIsProblemOfTheDay(false);
+            questionRepository.save(existingQuestion);
+        }
+        Long endTime = System.currentTimeMillis();
+        Logger.info("LeetCode [POTD] removal completed in {} seconds.", (endTime - startTime) / 1000);
     }
 
     @PostConstruct
