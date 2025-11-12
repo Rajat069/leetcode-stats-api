@@ -79,6 +79,15 @@ All endpoints are relative to the base path `/api/v1`.
 | GET | `/biggestJumpInRating` | Get the contest that resulted in the user's biggest rating increase. |
 | DELETE | `/evictUserData` | (Requires API Key) Evicts a user's contest data from the cache and DB. |
 
+### 🌏 GlobalContests Endpoints
+
+**Base Path**: `/api/v1/globalContestInfo`
+
+| Method | Endpoint | Description |
+|--------|--------|-------------|
+| GET | `/fetchContests` | Get a paginated list of all global contests from the local database. Supports `?page=`, `&size=`, and `&sort=`. |
+| GET | `/globalRanking` | Get a paginated list of global user rankings (PENDING) |
+
 ### ❓ Questions Endpoints
 
 **Base Path**: `/api/v1/questions`
