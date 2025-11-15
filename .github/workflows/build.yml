@@ -34,9 +34,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Create required directories
-        run: mkdir -p data
-
       - name: Build with Maven Wrapper
         run: |
           chmod +x mvnw
