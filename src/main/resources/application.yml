@@ -3,7 +3,7 @@ spring:
     name: leetcode-api
 
   scheduler:
-    enabled: false #TODO make it true when deploying via pipeline
+    enabled: true #change this to true when deploying via pipeline for testing we can keep it false after once the data is loaded in db
 
   jackson:
     serialization:

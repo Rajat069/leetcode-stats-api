@@ -109,7 +109,7 @@ public class LeetCodeSyncScheduler {
         Logger.info("LeetCode [AC Rate] sync completed in {} seconds.", (endTime - startTime) / 1000);
     }
 
-    @Scheduled(cron = "0 31 5 * * ?", zone = "Asia/Kolkata") // Runs every day at 5:31 AM (IST) for POTD sync
+    @Scheduled(cron = "0 1 0 * * ?") // Runs every day at 12:01 (UTC) for POTD sync
     @Async
     public void syncPOTD() {
         Logger.info("Starting LeetCode [POTD] sync... at {}", DateFormat.getDateInstance().format(System.currentTimeMillis()));
