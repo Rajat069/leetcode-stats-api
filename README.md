@@ -7,6 +7,7 @@
 <p align="center">
 <img src="https://img.shields.io/badge/License-MIT-green.svg"/>
 <img src="https://img.shields.io/badge/Maven-3.9.11-blue.svg?logo=apachemaven"/>
+<img src="https://github.com/rajat069/leetstats-api/actions/workflows/build.yml/badge.svg"/>
 </p>
 
 <p align="center">
