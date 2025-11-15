@@ -21,6 +21,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mvc:
+    # This tells Spring to throw an exception when no handler is found,
+    # which our new @ExceptionHandler(NoHandlerFoundException.class) can catch.
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+        # This disables Spring's default static resource handling,
+        # which is necessary for the above property to work reliably for API-only apps.
+      add-mappings: false
 
 leetcode:
   graphql:
