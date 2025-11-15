@@ -70,7 +70,7 @@ jobs:
 
       - name: Copy JAR to VM via SCP
 
-        uses: appleboy/scp-action@v1.0.3
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USERNAME }}
@@ -82,7 +82,7 @@ jobs:
 
       - name: SSH and Restart Service
         # This action securely logs into our VM and runs the restart commands
-        uses: appleboy/ssh-action@v1.0.3a
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USERNAME }}
