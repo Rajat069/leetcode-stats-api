@@ -99,6 +99,11 @@ springdoc:
     title: leetstats-api
     description: "The API for retrieving your LeetCode profile & Problems statistics"
     version: "0.0.1-SNAPSHOT"
+  servers:
+    - url: https://4.213.1.116.nip.io/api/v1
+      description: Production server
+    - url: http://localhost:8080/api/v1
+      description: Local development server
 
 scheduler:
   enabled: true #change this to true when deploying via pipeline for testing we can keep it false after once the data is loaded in db
