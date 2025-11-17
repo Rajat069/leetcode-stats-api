@@ -2,9 +2,6 @@ spring:
   application:
     name: leetcode-api
 
-  scheduler:
-    enabled: true #change this to true when deploying via pipeline for testing we can keep it false after once the data is loaded in db
-
   jackson:
     serialization:
       indent_output: true
@@ -102,3 +99,6 @@ springdoc:
     title: leetstats-api
     description: "The API for retrieving your LeetCode profile & Problems statistics"
     version: "0.0.1-SNAPSHOT"
+
+scheduler:
+  enabled: true #change this to true when deploying via pipeline for testing we can keep it false after once the data is loaded in db
